@@ -421,6 +421,20 @@
   .profile-name { font-weight: 700; font-size: 13px; }
   .profile-grade { font-size: 11px; color: var(--muted); white-space: nowrap; }
   .trait-row { display: flex; gap: 6px; flex-wrap: wrap; }
+  .profile-traits {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    column-gap: 12px; row-gap: 8px;
+    align-items: center;
+  }
+  .profile-traits .trait-lbl {
+    font-size: 9.5px; font-weight: 700; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--muted-2);
+    white-space: nowrap;
+  }
+  .profile-traits .trait-pills {
+    display: flex; gap: 6px; flex-wrap: wrap;
+  }
   .trait {
     font-size: 11px; padding: 4px 9px; border-radius: 999px;
     background: #efece5; color: var(--ink-2); font-weight: 500;
@@ -1340,12 +1354,24 @@
                 <div class="profile-grade">12 sessions · last met Thu</div>
               </div>
             </div>
-            <div class="trait-row">
-              <span class="trait interest">🏀 basketball</span>
-              <span class="trait interest">Fortnite</span>
-              <span class="trait style">needs wait time</span>
-              <span class="trait">visual learner</span>
-              <span class="trait curric">Eureka Math</span>
+            <div class="profile-traits">
+              <span class="trait-lbl">Curriculum</span>
+              <div class="trait-pills">
+                <span class="trait curric">Eureka Math</span>
+              </div>
+
+              <span class="trait-lbl">Learner type</span>
+              <div class="trait-pills">
+                <span class="trait style">needs wait time</span>
+                <span class="trait">visual learner</span>
+              </div>
+
+              <span class="trait-lbl">Interests</span>
+              <div class="trait-pills">
+                <span class="trait interest">🏀 NBA</span>
+                <span class="trait interest">🎮 Fortnite</span>
+                <span class="trait interest">🐴 horses</span>
+              </div>
             </div>
             <div class="example-prob">
               <b>From Thu's session:</b> Owns halves &amp; quarters. Thirds still trip him up.
