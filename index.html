@@ -722,6 +722,60 @@
   /* Icons */
   .i-sparkle { color: #fff; }
 
+  /* ——— Testimonials ——— */
+  .testimonials {
+    background: var(--bg);
+    border-top: 1px solid var(--line-2);
+  }
+  .testimonial-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+    margin-top: 48px;
+  }
+  @media (max-width: 900px) { .testimonial-grid { grid-template-columns: 1fr; } }
+  .testimonial {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: 28px 28px 22px;
+    display: flex; flex-direction: column;
+    position: relative;
+  }
+  .testimonial::before {
+    content: '“';
+    position: absolute; top: 14px; left: 22px;
+    font-family: 'Manrope', Georgia, serif;
+    font-size: 72px; line-height: 1;
+    color: var(--teal-soft);
+    font-weight: 700;
+    pointer-events: none;
+  }
+  .testimonial blockquote {
+    margin: 24px 0 24px; padding: 0;
+    font-size: 15.5px; line-height: 1.55;
+    color: var(--ink-2); text-wrap: pretty;
+    letter-spacing: -0.005em;
+    flex: 1; position: relative;
+  }
+  .testimonial-author {
+    display: flex; align-items: center; gap: 12px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line-2);
+  }
+  .avatar-placeholder {
+    width: 44px; height: 44px; border-radius: 999px;
+    background: #f4f1ea;
+    border: 1px dashed #c8c3b7;
+    flex-shrink: 0;
+  }
+  .author-name {
+    font-size: 14px; font-weight: 700; color: var(--ink);
+    letter-spacing: -0.005em;
+  }
+  .author-meta {
+    font-size: 12px; color: var(--muted);
+    margin-top: 2px;
+  }
+
   /* ——— Pipeline metrics ——— */
   .pipeline {
     background: #fff;
@@ -1433,6 +1487,50 @@
   </div>
 </section>
 
+<!-- ============ TESTIMONIALS ============ -->
+<section class="testimonials" id="voices">
+  <div class="wrap">
+    <div class="section-eyebrow">Voices from the beta</div>
+    <h2>Tutors on teaching with <span class="accent">Sidekick</span>.</h2>
+    <p class="section-lede">Early-access Step Up tutors piloting Sidekick with real students this semester.</p>
+
+    <div class="testimonial-grid">
+      <article class="testimonial">
+        <blockquote>It helped me recall the triangle properties and explain why certain types could also be others. The feedback it gives can be helpful for new incoming tutors — and continuing tutors too.</blockquote>
+        <footer class="testimonial-author">
+          <div class="avatar-placeholder" aria-hidden="true"></div>
+          <div>
+            <div class="author-name">Alonso M.</div>
+            <div class="author-meta">Step Up volunteer tutor</div>
+          </div>
+        </footer>
+      </article>
+
+      <article class="testimonial">
+        <blockquote>Sidekick has been the most helpful — it creates problems that reinforce specific topics, and most have a visual component, which really helps students.</blockquote>
+        <footer class="testimonial-author">
+          <div class="avatar-placeholder" aria-hidden="true"></div>
+          <div>
+            <div class="author-name">Leslie M.</div>
+            <div class="author-meta">Step Up volunteer tutor</div>
+          </div>
+        </footer>
+      </article>
+
+      <article class="testimonial">
+        <blockquote>Some of my students are more advanced and Eedi questions are too easy for them. Sidekick lets me generate harder problems, ranked by difficulty — substantially easier to address.</blockquote>
+        <footer class="testimonial-author">
+          <div class="avatar-placeholder" aria-hidden="true"></div>
+          <div>
+            <div class="author-name">Anagha</div>
+            <div class="author-meta">Step Up volunteer tutor</div>
+          </div>
+        </footer>
+      </article>
+    </div>
+  </div>
+</section>
+
 <!-- ============ STATS ============ -->
 <section class="stats" id="evidence">
   <div class="wrap">
@@ -1574,10 +1672,10 @@
   if (prefersReduced) return;
 
   // Tag things for reveal
-  document.querySelectorAll('.manifesto .wrap, .briefing-copy, .briefing-mock, .features > .wrap > .section-eyebrow, .features > .wrap > h2, .features > .wrap > .section-lede, .stats > .wrap > .section-eyebrow, .stats > .wrap > h2, .pipeline > .wrap > .section-eyebrow, .pipeline > .wrap > h2, .pipeline > .wrap > .section-lede, .pipeline > .wrap > .pipe-foot, .flow .wrap, .closing .wrap')
+  document.querySelectorAll('.manifesto .wrap, .briefing-copy, .briefing-mock, .features > .wrap > .section-eyebrow, .features > .wrap > h2, .features > .wrap > .section-lede, .testimonials > .wrap > .section-eyebrow, .testimonials > .wrap > h2, .testimonials > .wrap > .section-lede, .stats > .wrap > .section-eyebrow, .stats > .wrap > h2, .pipeline > .wrap > .section-eyebrow, .pipeline > .wrap > h2, .pipeline > .wrap > .section-lede, .pipeline > .wrap > .pipe-foot, .flow .wrap, .closing .wrap')
     .forEach(el => el.classList.add('reveal'));
 
-  document.querySelectorAll('.features-grid, .stats-grid, .briefing-bullets, .flow-grid, .pipeline-grid').forEach(el => el.classList.add('reveal-stagger'));
+  document.querySelectorAll('.features-grid, .stats-grid, .briefing-bullets, .flow-grid, .pipeline-grid, .testimonial-grid').forEach(el => el.classList.add('reveal-stagger'));
 
   // IntersectionObserver for all reveal targets
   const io = new IntersectionObserver((entries) => {
