@@ -1,0 +1,10 @@
+# Original design handoff bundle (brand guide, debug renders, screenshots) — internal, do not publish.
+handoff/
+
+# macOS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
+*.swp
