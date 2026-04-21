@@ -149,7 +149,7 @@
     padding: 48px 60px 12px 60px;
   }
   @media (max-width: 1180px) { .hero-preview { padding: 44px 40px 12px 40px; max-width: 520px; } }
-  @media (max-width: 980px) { .hero-preview { justify-self: center; max-width: 440px; padding: 8px 8px 80px 8px; aspect-ratio: auto; min-height: 700px; } }
+  @media (max-width: 980px) { .hero-preview { justify-self: center; max-width: 440px; padding: 8px 8px 24px 8px; aspect-ratio: auto; min-height: 0; } }
 
   .device {
     position: absolute; top: 48px; bottom: 12px; left: 60px; right: 60px;
@@ -289,7 +289,7 @@
     animation: pulseDot 2s ease-in-out infinite;
   }
   @media (max-width: 1180px) { .float-chip.suggest { left: 0; bottom: 40px; max-width: 160px; } }
-  @media (max-width: 980px) { .float-chip.suggest { position: relative; left: auto; bottom: auto; transform: none; max-width: none; margin: 12px auto 0; } .float-chip.suggest::after { display: none; } }
+  @media (max-width: 980px) { .float-chip.suggest { position: relative; top: auto; right: auto; bottom: auto; left: auto; transform: none; width: auto; max-width: none; margin: 12px auto 0; } .float-chip.suggest::after { display: none; } }
 
   /* Card 2 — Session analysis / tutor feedback (purple) — RIGHT gutter, anchored to talk-move banner */
   /* Card 2 — purple — TOP-RIGHT, high enough NOT to cover the "explain his reasoning" banner */
@@ -316,7 +316,7 @@
   }
   .chip-metric .m b { font-size: 14px; color: #2a2f8f; font-weight: 800; letter-spacing: -0.01em; }
   @media (max-width: 1180px) { .float-chip.analysis { right: 0; top: 36px; max-width: 160px; } }
-  @media (max-width: 980px) { .float-chip.analysis { position: relative; right: auto; top: auto; transform: none; max-width: none; margin: 12px auto 0; } .float-chip.analysis::after { display: none; } }
+  @media (max-width: 980px) { .float-chip.analysis { position: relative; top: auto; right: auto; bottom: auto; left: auto; transform: none; width: auto; max-width: none; margin: 12px auto 0; } .float-chip.analysis::after { display: none; } }
 
   /* Card 3 — Personalization (gold) — RIGHT gutter, anchored to active Equivalent Fractions skill */
   /* Card 3 — gold — sits DIRECTLY ABOVE the "Simplify to lowest terms" Developing row, compact */
@@ -337,7 +337,7 @@
   .float-chip.note .chip-headline em { color: var(--gold-ink); font-weight: 800; }
   .float-chip.note .ico { background: #fff; color: var(--gold-ink); border: 1px solid #ecd6a2; }
   @media (max-width: 1180px) { .float-chip.note { right: 0; bottom: 72px; max-width: 160px; } }
-  @media (max-width: 980px) { .float-chip.note { position: relative; right: auto; bottom: auto; transform: none; max-width: none; margin: 12px auto 0; } .float-chip.note::after { display: none; } }
+  @media (max-width: 980px) { .float-chip.note { position: relative; top: auto; right: auto; bottom: auto; left: auto; transform: none; width: auto; max-width: none; margin: 12px auto 0; } .float-chip.note::after { display: none; } }
 
   /* ——— Section shell ——— */
   section { padding: 80px 32px; }
