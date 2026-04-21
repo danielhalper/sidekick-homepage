@@ -817,6 +817,55 @@
     display: grid; place-items: center; color: var(--mint-ink);
   }
 
+  /* Wider modal for video */
+  .modal.wide { max-width: 680px; }
+
+  .video-placeholder {
+    aspect-ratio: 16 / 9;
+    background:
+      radial-gradient(circle at 28% 34%, rgba(245,198,106,.22), transparent 55%),
+      radial-gradient(circle at 76% 72%, rgba(17,155,163,.35), transparent 60%),
+      linear-gradient(135deg, var(--teal-deep) 0%, #0b6469 100%);
+    border-radius: 14px;
+    display: grid; place-items: center;
+    color: #fff;
+    overflow: hidden;
+    position: relative;
+    margin: 4px 0 18px;
+  }
+  .video-placeholder::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(180deg, rgba(0,0,0,0) 55%, rgba(0,0,0,.18) 100%);
+  }
+  .video-placeholder-inner {
+    position: relative; z-index: 1;
+    text-align: center;
+    padding: 28px 24px;
+  }
+  .video-placeholder-ico {
+    width: 52px; height: 52px;
+    margin: 0 auto 14px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.22);
+    display: grid; place-items: center;
+    color: #f5c66a;
+    backdrop-filter: blur(4px);
+  }
+  .video-placeholder-label {
+    font-size: 10px; font-weight: 800; letter-spacing: 0.2em;
+    text-transform: uppercase; color: #f5c66a;
+    margin-bottom: 8px;
+  }
+  .video-placeholder-title {
+    font-size: 18px; font-weight: 700; letter-spacing: -0.015em;
+    margin-bottom: 6px;
+  }
+  .video-placeholder-sub {
+    font-size: 13px; color: rgba(255,255,255,.72);
+    max-width: 320px; margin: 0 auto; line-height: 1.5;
+  }
+
   /* ——— Testimonials ——— */
   .testimonials {
     background: var(--bg);
@@ -1237,7 +1286,7 @@
     <p class="lede">Step Up's volunteer tutors already drive <b>2–4 additional months of learning</b> per student. Sidekick, our AI copilot, makes them better at every part of the job — diagnosing what a student knows, teaching the right concept next, and tracking mastery across sessions.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="#" data-open-form="access">Request access →</a>
-      <a class="btn btn-outline" href="#how">See how it works</a>
+      <a class="btn btn-outline" href="#how" data-open-video>See how it works</a>
       <span class="hero-note">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M9 12l2 2 4-4"/></svg>
         Free for Step Up tutors
@@ -1931,6 +1980,27 @@
       <h3 class="modal-title">Thanks — we'll be in touch.</h3>
       <p class="modal-sub">Your email client should have opened. If it didn't, you can write to <b>daniel@stepuptutoring.org</b> directly.</p>
     </div>
+
+    <!-- Video walkthrough placeholder. When the cut is ready, replace
+         .video-placeholder with an <iframe> or <video> at the same aspect. -->
+    <div class="video-wrap" style="display:none">
+      <div class="modal-eyebrow">Walkthrough</div>
+      <h3 class="modal-title">See Sidekick in a real session.</h3>
+      <p class="modal-sub">A short walkthrough of Sidekick running alongside a live Step Up tutoring session — diagnosing, scaffolding, and tracking mastery as it goes.</p>
+
+      <div class="video-placeholder" aria-label="Video placeholder">
+        <div class="video-placeholder-inner">
+          <div class="video-placeholder-ico">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+          <div class="video-placeholder-label">Coming soon</div>
+          <div class="video-placeholder-title">We're still cutting it.</div>
+          <div class="video-placeholder-sub">Check back shortly — or request access and we'll send the walkthrough directly once it's live.</div>
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-primary form-submit" data-open-form="access">In the meantime — request access →</button>
+    </div>
   </div>
 </div>
 
@@ -1943,6 +2013,7 @@
   const form = modal.querySelector('#contact-form');
   const formWrap = modal.querySelector('.form-wrap');
   const successWrap = modal.querySelector('.form-success');
+  const videoWrap = modal.querySelector('.video-wrap');
   const titleEl = modal.querySelector('#modal-title');
   const subEl = modal.querySelector('#modal-sub');
   const eyebrowEl = modal.querySelector('#modal-eyebrow');
@@ -1978,6 +2049,8 @@
     form.reset();
     formWrap.style.display = '';
     successWrap.style.display = 'none';
+    videoWrap.style.display = 'none';
+    modal.querySelector('.modal').classList.remove('wide');
 
     modal.hidden = false;
     requestAnimationFrame(() => modal.classList.add('open'));
@@ -1986,6 +2059,18 @@
       const first = modal.querySelector('input, textarea');
       if (first) first.focus();
     }, 50);
+  }
+
+  function openVideo() {
+    formWrap.style.display = 'none';
+    successWrap.style.display = 'none';
+    videoWrap.style.display = '';
+    modal.querySelector('.modal').classList.add('wide');
+
+    modal.hidden = false;
+    requestAnimationFrame(() => modal.classList.add('open'));
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => closeBtn.focus(), 50);
   }
 
   function closeModal() {
@@ -1998,6 +2083,13 @@
     el.addEventListener('click', (e) => {
       e.preventDefault();
       openModal(el.getAttribute('data-open-form'));
+    });
+  });
+
+  document.querySelectorAll('[data-open-video]').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.preventDefault();
+      openVideo();
     });
   });
 
