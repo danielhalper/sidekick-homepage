@@ -808,6 +808,19 @@
     font-size: 11px; color: var(--muted-2);
     margin: 10px 0 0; text-align: center; line-height: 1.4;
   }
+  .form-error {
+    display: none;
+    font-size: 12px; color: #b3261e;
+    background: #fdecea; border: 1px solid #f5c6c1;
+    border-radius: 8px; padding: 8px 10px;
+    margin: 0 0 10px; line-height: 1.4;
+  }
+  .form-error.show { display: block; }
+  .form-submit[disabled] { opacity: 0.7; cursor: not-allowed; }
+  .form-honeypot {
+    position: absolute; left: -9999px; width: 1px; height: 1px;
+    opacity: 0; pointer-events: none;
+  }
   .form-success {
     padding: 8px 0; text-align: center;
   }
@@ -1968,8 +1981,12 @@
           <label class="form-label" for="f-why" id="f-why-label">Why are you interested?</label>
           <textarea class="form-textarea" id="f-why" name="why" required></textarea>
         </div>
-        <button type="submit" class="btn btn-primary form-submit">Send →</button>
-        <p class="form-note">Your email client will open pre-filled to <b>daniel@stepuptutoring.org</b>.</p>
+        <div class="form-honeypot" aria-hidden="true">
+          <label>Don't fill this out: <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off"></label>
+        </div>
+        <p class="form-error" id="form-error" role="alert"></p>
+        <button type="submit" class="btn btn-primary form-submit" id="form-submit-btn">Send →</button>
+        <p class="form-note">We'll be in touch within a few days.</p>
       </form>
     </div>
 
@@ -1977,8 +1994,8 @@
       <div class="form-success-ico">
         <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-11"/></svg>
       </div>
-      <h3 class="modal-title">Thanks — we'll be in touch.</h3>
-      <p class="modal-sub">Your email client should have opened. If it didn't, you can write to <b>daniel@stepuptutoring.org</b> directly.</p>
+      <h3 class="modal-title">Thanks — we got it.</h3>
+      <p class="modal-sub">We'll be in touch within a few days. If anything's urgent, you can also write to <b>daniel@stepuptutoring.org</b> directly.</p>
     </div>
 
     <!-- Video walkthrough placeholder. When the cut is ready, replace
@@ -2047,6 +2064,9 @@
     whyLabelEl.textContent = c.whyLabel;
 
     form.reset();
+    clearError();
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Send →';
     formWrap.style.display = '';
     successWrap.style.display = 'none';
     videoWrap.style.display = 'none';
@@ -2099,27 +2119,64 @@
     if (e.key === 'Escape' && !modal.hidden) closeModal();
   });
 
-  form.addEventListener('submit', (e) => {
+  const WEB3FORMS_KEY = 'c75da9c7-ff38-4915-825a-6611543c7559';
+  const submitBtn = form.querySelector('#form-submit-btn');
+  const errorEl = form.querySelector('#form-error');
+
+  function showError(msg) {
+    errorEl.textContent = msg;
+    errorEl.classList.add('show');
+  }
+  function clearError() {
+    errorEl.textContent = '';
+    errorEl.classList.remove('show');
+  }
+
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (!form.reportValidity()) return;
+
     const get = (id) => (form.querySelector('#' + id)?.value || '').trim();
     const name = get('f-name');
     const org = get('f-org');
     const email = get('f-email');
     const why = get('f-why');
     const c = contexts[currentContext];
-    const body = [
-      `Name: ${name}`,
-      `Organization: ${org}`,
-      `Email: ${email}`,
-      '',
-      c.whyLabel,
-      why,
-    ].join('\n');
-    const url = `mailto:daniel@stepuptutoring.org?subject=${encodeURIComponent(c.subject)}&body=${encodeURIComponent(body)}`;
-    window.location.href = url;
-    formWrap.style.display = 'none';
-    successWrap.style.display = '';
+
+    clearError();
+    submitBtn.disabled = true;
+    const originalLabel = submitBtn.textContent;
+    submitBtn.textContent = 'Sending…';
+
+    const payload = {
+      access_key: WEB3FORMS_KEY,
+      subject: c.subject,
+      from_name: `${name} (${org})`,
+      replyto: email,
+      name,
+      organization: org,
+      email,
+      message: `${c.whyLabel}\n${why}`,
+      botcheck: form.querySelector('input[name="botcheck"]')?.checked ? 'true' : '',
+    };
+
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || data.success === false) {
+        throw new Error(data.message || `Request failed (${res.status})`);
+      }
+      formWrap.style.display = 'none';
+      successWrap.style.display = '';
+    } catch (err) {
+      showError("Couldn't send — please try again, or email daniel@stepuptutoring.org directly.");
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalLabel;
+    }
   });
 })();
 </script>
