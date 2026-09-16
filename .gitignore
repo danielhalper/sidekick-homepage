@@ -8,3 +8,5 @@ handoff/
 .vscode/
 .idea/
 *.swp
+.vercel
+.env*
